@@ -38,8 +38,6 @@ searchBtn.addEventListener("click", async (event) => {
         console.log(data.meals[0]);
 
 
-
-
         // TODO: Fixa den här funktionen. Det går att toggla, men varannan kort har ett ojämt nummer och togglar en gång mer än föregående. Vad beror det på?
         // function listenForLikes () {
         //     const likes = document.querySelectorAll(".like");
