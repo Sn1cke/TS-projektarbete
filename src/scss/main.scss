@@ -86,12 +86,24 @@ header {
     grid-template-areas: 
     "heading"
     "results";
-    // grid-template-columns: repeat(2, 1fr);
     width: 100%;
     
-    #search-heading {
-        margin: 8px 16px 8px 16px;
+    .search-header {
+        display: flex;
+        justify-content: space-between;
         grid-area: heading;
+        #search-hits {
+            margin: 8px 16;
+            flex: 1;
+            align-self: center;
+        }
+        #search-history {
+            margin: 8px 0;
+            flex: 1;
+            .history-btn {
+                @include searchHistoryButton;
+            }
+        }
     }
     .meals {
         display: grid;
@@ -226,6 +238,23 @@ header {
     }
     .hero {
         height: 240px;
+    }
+    .random-recipe {
+        .random-container {
+            display: flex;
+            flex-direction: row;
+            gap: 0.8rem;
+            margin: 8px 16px 16px 16px;
+            img {
+                flex: 1;
+                object-fit:cover;
+                max-width: 450px;
+                max-height: 450px;
+            }
+            .random-meal-info {
+                flex: 1;
+            }
+        }
     }
 }
 @media (min-width: $screen-lg) {
