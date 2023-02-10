@@ -1,48 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projektarbete</title>
-    <link rel="stylesheet" href="scss/main.scss">
-</head>
-<body>
-
+    <link rel="stylesheet" href="scss/main.scss" />
+  </head>
+  <body>
     <header>
-        <h1>Annapurna</h1>
+      <button id="fav-meals">Favourite meals</button>
+      <h1>Annapurna</h1>
     </header>
     <main>
-        <section class="hero">
-            <div id="search-meals">
-                <h3>Search for recipe</h3>
-            <form>
-                <input type="text" name="" id="user-search">
-            </form>
-            <button id="search-btn">Search</button>
-            </div>
-        </section>
-    
-        <section class="search-container">
-            <div class="search-header">
-                <section id="search-hits"></section>
-                <div id="search-history"></div>
-            </div>
-            <section class="meals">
-            </section>
-        </section>
-    
-        <section class="random-recipe">
-            <h2>Recipe inspiration</h2>
-            <div class="random-container">
-            </div>
-        </section>
-    
-        <section class="weekly-recipes">
-            <h4>Weekly recipes</h4>
-        </section>
+      <section class="hero">
+        <div id="search-meals">
+          <h3>Search for recipe</h3>
+          <form>
+            <input type="text" name="" id="user-search" />
+          </form>
+          <button id="search-btn">Search</button>
+        </div>
+      </section>
+
+      <section class="search-container">
+        <div class="search-header">
+          <section id="search-hits"></section>
+          <div id="search-history"></div>
+        </div>
+        <section class="meals"></section>
+      </section>
+
+      <section class="random-recipe">
+        <h2>Recipe inspiration</h2>
+        <div class="random-container"></div>
+      </section>
+
+      <section class="weekly-recipes">
+        <h4>Weekly recipes</h4>
+      </section>
     </main>
 
-<script src="ts/app.ts"></script>
-</body>
+    <script src="ts/app.ts"></script>
+  </body>
 </html>

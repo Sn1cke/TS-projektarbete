@@ -1,4 +1,7 @@
-@mixin headers {
-    font-size: 22px;
-    color: blue;
+@mixin categoryStyle {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: rgb(201, 45, 45);
+  font-weight: 600;
+  text-decoration: none;
 }

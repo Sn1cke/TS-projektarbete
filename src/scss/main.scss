@@ -1,17 +1,17 @@
-@use 'abstracts/index' as *;
+@use "abstracts/index" as *;
 
 * {
-    margin: 0;
-    box-sizing: border-box;
-    font-family: $main-font;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: $main-font;
 }
 
 main {
-    grid-area: search / daily / weekly;
-    min-width: 366px;
-    margin: auto;
-    display: grid;
-    grid-template-areas: 
+  grid-area: search / daily / weekly;
+  min-width: 366px;
+  margin: auto;
+  display: grid;
+  grid-template-areas:
     "header header header"
     "hero hero hero"
     "search search search"
@@ -20,247 +20,237 @@ main {
 }
 
 header {
-    margin: auto;
-    grid-area: header;
-    display: flex;
-    justify-content: right;
-    // background-color: rgb(238, 174, 174);
-    height: 65px;
-    width: 100%;
-    align-items: center;
+  margin: auto;
+  grid-area: header;
+  display: flex;
+  justify-content: right;
+  // background-color: rgb(238, 174, 174);
+  height: 65px;
+  width: 100%;
+  align-items: center;
 
-    h1 {
-        margin: 0 20px 0 0;
-    }
+  h1 {
+    margin: 0 20px 0 0;
+  }
 }
 
 .hero {
-    grid-area: hero;
-    display: grid;
-    grid-template-areas: 'stack';
-    height: 160px;
-    place-items: center;
-    background: url(../images/flatlay-iron-skillet-with-meat-and-other-food.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  grid-area: hero;
+  display: grid;
+  grid-template-areas: "stack";
+  height: 160px;
+  place-items: center;
+  background: url(../images/flatlay-iron-skillet-with-meat-and-other-food.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-    #search-meals {
-        display: flex;
-        flex-direction: column;
-        h3 {
-            margin: auto;
-            color: white;
-            font-weight: 400;
-        }
-        form {
-            display: flex;
-            width: 250px;
-            padding: 2px;
-            border: 1px solid rgba(0, 0, 0, 0.534);
-            border-radius: 30px;
-            background-color: white;
-        }
-        input {
-            border: none;
-            margin: 0 5px;
-            font-size: 14px;
-            font-family: $sub-font;
-            width: 100%;
-        }
-        input:focus {
-            outline: none;
-        }
-        button {
-            font-family: $sub-font;
-            margin: auto;
-            margin-top: 0.3rem;
-            width: 64px;
-        }
+  #search-meals {
+    display: flex;
+    flex-direction: column;
+    h3 {
+      margin: auto;
+      color: white;
+      font-weight: 400;
     }
+    form {
+      display: flex;
+      width: 250px;
+      padding: 2px;
+      border: 1px solid rgba(0, 0, 0, 0.534);
+      border-radius: 30px;
+      background-color: white;
+    }
+    input {
+      border: none;
+      margin: 0 5px;
+      font-size: 14px;
+      font-family: $sub-font;
+      width: 100%;
+    }
+    input:focus {
+      outline: none;
+    }
+    button {
+      font-family: $sub-font;
+      margin: auto;
+      margin-top: 0.3rem;
+      width: 64px;
+    }
+  }
 }
 
 .search-container {
-    grid-area: search;
-    display: grid;
-    grid-template-areas: 
+  grid-area: search;
+  display: grid;
+  grid-template-areas:
     "heading"
     "results";
-    width: 100%;
-    
-    .search-header {
+  width: 100%;
+
+  .search-header {
+    display: flex;
+    justify-content: space-between;
+    grid-area: heading;
+    #search-hits {
+      margin: 8px 16;
+      flex: 1;
+      align-self: center;
+    }
+    #search-history {
+      margin: 8px 0;
+      flex: 1;
+      .history-btn {
+        @include searchHistoryButton;
+      }
+    }
+  }
+  .meals {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 0 16px;
+    .meal-card {
+      box-shadow: 0.1rem 0.2rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
+      position: relative;
+      .like {
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: 3%;
+        right: 3%;
+      }
+      .liked {
+        background-image: url(../images/liked.png);
+        background-size: cover;
+      }
+      .not-liked {
+        background-color: #c0c0c0;
+        border-radius: 50px;
+        background-image: url(../images/not-liked.png);
+        background-size: cover;
+      }
+      .meal-img {
+        width: 100%;
+        object-fit: cover;
+        background-color: #eee;
+        border-top-left-radius: 0.4rem;
+        border-top-right-radius: 0.4rem;
+      }
+
+      .meal-info {
         display: flex;
+        width: 100%;
         justify-content: space-between;
-        grid-area: heading;
-        #search-hits {
-            margin: 8px 16;
-            flex: 1;
-            align-self: center;
+        padding: 0 0.2rem;
+        margin: 0.2rem 0 0.5rem;
+        .meal-name {
+          font-size: 1rem;
+          display: inline;
         }
-        #search-history {
-            margin: 8px 0;
-            flex: 1;
-            .history-btn {
-                @include searchHistoryButton;
-            }
+        .meal-category {
+          @include categoryStyle;
+          font-family: $main-font;
         }
+      }
     }
-    .meals {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin: 0 16px;
-        .meal-card {
-            cursor: pointer;
-            box-shadow: 0.1rem 0.2rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
-            position: relative;
-            .like {
-                width: 25px;
-                height: 25px;
-                position: absolute;
-                top: 3%;
-                right: 3%;
-            }
-            .liked {
-                background-color: red;
-                // background: url(../images/liked.png);
-            }
-            .not-liked {
-                background-color: blue;
-                // background: url(../images/not-liked.png);
-            }
-            .meal-img {
-                width: 100%;
-                object-fit: cover;
-                background-color: #eee;
-                border-top-left-radius: 0.4rem;
-                border-top-right-radius: 0.4rem;
-            }
-            
-            .meal-info {
-                display: flex;
-                width: 100%;
-                justify-content: space-between;
-                padding: 0 0.2rem;
-                margin: 0.2rem 0 0.5rem;
-                .meal-name {
-                    font-size: 1rem;
-                    display: inline;
-                }
-                  .meal-category {
-                    font-size: 0.8rem;
-                    text-transform: uppercase;
-                    color: rgb(201, 45, 45);
-                    font-weight: 600;
-                    text-decoration: none;
-                    &:hover {
-                        color: lighten(rgb(223, 43, 43), 25);
-                        text-decoration: none;
-                    }
-                }
-            }
-        }
-    }
+  }
 }
-
-
-// Om jag jobbar mobile first så blir det svårt att få med instruktionerna, kanske får göra total tre divar. En för img, en för kort fakta så som namn, ursprung osv, och sen lägga instruktionerna under. Sen när jag går över en viss gräns så kommer instruktionerna och lägger sig vid sidan.
 
 .random-recipe {
-    display: grid;
-    grid-area: daily;
-    
-    > h2 {
-        margin: 16 16 0 16;
-    }
+  display: grid;
+  grid-area: daily;
 
-    .random-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        margin: 8px 16px 16px 16px;
-        img {
-            grid-area: img;
-            object-fit:cover;
-            width: 100%;
-        }
-        .random-meal-info {
-            a {
-                color: $categories;
-                text-decoration: none;
-                font-weight: 600;
-            }
-            h4 {
-                margin: 0.5rem 0 0.2rem 0;
-            }
-            h4, p {
-                font-family: $sub-font;
-            }
-        }
+  > h2 {
+    margin: 16 16 0 16;
+  }
+
+  .random-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin: 8px 16px 16px 16px;
+    img {
+      grid-area: img;
+      object-fit: cover;
+      width: 100%;
     }
+    .random-meal-info {
+      .meal-category {
+        @include categoryStyle;
+        font-family: $main-font;
+      }
+      h4 {
+        margin: 0.5rem 0 0.2rem 0;
+      }
+      h4,
+      p {
+        font-family: $sub-font;
+      }
+    }
+  }
 }
-
 
 .weekly-recipes {
-    grid-area: weekly;
-    border: 1px solid yellow;
-    background-color: #555;
+  grid-area: weekly;
+  border: 1px solid yellow;
+  background-color: #555;
 }
 
-
 @media (min-width: $screen-sm) {
-    header {
-        width: 80%;
-        max-width: 1600px;
-        h1 {
-            margin: 0;
-        }
+  header {
+    width: 80%;
+    max-width: 1600px;
+    h1 {
+      margin: 0;
     }
-    main {
-        width: 80%;
-        max-width: 1600px;
+  }
+  main {
+    width: 80%;
+    max-width: 1600px;
+  }
+  .search-container {
+    .meals {
+      grid-template-columns: repeat(3, 1fr);
     }
-    .search-container {
-        .meals {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-    .hero {
-        height: 200px;
-    }
+  }
+  .hero {
+    height: 200px;
+  }
 }
 
 @media (min-width: $screen-md) {
-    .search-container {
-        .meals {
-            grid-template-columns: repeat(4, 1fr);
-        }
+  .search-container {
+    .meals {
+      grid-template-columns: repeat(4, 1fr);
     }
-    .hero {
-        height: 240px;
+  }
+  .hero {
+    height: 240px;
+  }
+  .random-recipe {
+    .random-container {
+      display: flex;
+      flex-direction: row;
+      gap: 0.8rem;
+      margin: 8px 16px 16px 16px;
+      img {
+        flex: 1;
+        object-fit: cover;
+        max-width: 450px;
+        max-height: 450px;
+      }
+      .random-meal-info {
+        flex: 1;
+      }
     }
-    .random-recipe {
-        .random-container {
-            display: flex;
-            flex-direction: row;
-            gap: 0.8rem;
-            margin: 8px 16px 16px 16px;
-            img {
-                flex: 1;
-                object-fit:cover;
-                max-width: 450px;
-                max-height: 450px;
-            }
-            .random-meal-info {
-                flex: 1;
-            }
-        }
-    }
+  }
 }
 @media (min-width: $screen-lg) {
-    .search-container {
-        .meals {
-            grid-template-columns: repeat(5, 1fr);
-        }
+  .search-container {
+    .meals {
+      grid-template-columns: repeat(5, 1fr);
     }
+  }
 }
