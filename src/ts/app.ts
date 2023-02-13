@@ -2,6 +2,12 @@
 const inputField = document.querySelector("#user-search") as HTMLInputElement;
 const searchBtn = document.querySelector("#search-btn") as HTMLButtonElement;
 const favMeals = document.querySelector("#fav-meals") as HTMLButtonElement;
+const introductionContainer = document.querySelector(
+  ".introduction"
+) as HTMLElement;
+const searchContainer = document.querySelector(
+  ".search-container"
+) as HTMLElement;
 const mealSearchResults = document.querySelector(".meals") as HTMLElement;
 const searchHits = document.querySelector("#search-hits") as HTMLElement;
 const searchHistory = document.querySelector("#search-history") as HTMLElement;
@@ -9,12 +15,17 @@ const randomContainer = document.querySelector(
   ".random-container"
 ) as HTMLElement;
 const categoryLink = document.querySelector(".meal-category") as HTMLElement;
+const dropdownCategories = document.querySelector(".dropdown-content");
 
 // ========== Three different URLs ==========
 const searchURL: string = "https://themealdb.com/api/json/v1/1/search.php?s=";
 const randomRecipeURL: string =
   "https://www.themealdb.com/api/json/v1/1/random.php";
 const mealID: string = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
+const mealCategories: string =
+  "https://www.themealdb.com/api/json/v1/1/categories.php";
+const filterCategory: string =
+  "https://www.themealdb.com/api/json/v1/1/filter.php?c=";
 
 // ===== Array to store the favourite meals =====
 const favArr: string[] = [];
@@ -43,29 +54,46 @@ const loadMealCards = function (arr) {
   });
 };
 
-function reloadFavourites(arr) {
-  Promise.all(
-    arr.map((id) =>
-      fetch(mealID + id)
-        .then((res) => res.json())
-        .then((results) => {
-          const mealHTML = `
-            <article class="meal-card ${results.meals[0].idMeal}">
-            <img class="meal-img" src="${results.meals[0].strMealThumb}" />
-            <div class="like liked">
+async function categoryMenu() {
+  const res = await fetch(mealCategories);
+  const data = await res.json();
+  data.categories.forEach((category) => {
+    const categoryName = document.createElement("p");
+    categoryName.innerText = category.strCategory;
+    dropdownCategories.append(categoryName);
+
+    categoryName.addEventListener("click", async () => {
+      const res2 = await fetch(filterCategory + categoryName.innerText);
+      const data2 = await res2.json();
+      mealSearchResults.innerHTML = "";
+      data2.meals.forEach((meal) => {
+        const mealHTML = `
+        <article class="meal-card ${meal.idMeal}">
+            <img class="meal-img" src="${meal.strMealThumb}" />
+            <div class="like not-liked">
             </div>
             <div class="meal-info">
-            <h3 class="meal-name">${results.meals[0].strMeal}</h3>
-            <p class="meal-category">${results.meals[0].strCategory}</p>
+            <h3 class="meal-name">${meal.strMeal}</h3>
+            <p class="meal-category">${categoryName.innerText}</p>
             </div>
-            </article>
-                `;
-          mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
-          listenForLikes();
-          console.log(arr);
-        })
-    )
-  );
+        </article>
+        `;
+        mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
+
+        const notLiked = document.querySelector(".not-liked");
+        if (favArr.includes(meal.idMeal)) {
+          notLiked.classList.remove("not-liked");
+          notLiked.classList.add("liked");
+        }
+      });
+      listenForLikes();
+    });
+  });
+}
+
+function hideIntro() {
+  introductionContainer.classList.add("hidden");
+  searchContainer.classList.remove("hidden");
 }
 
 // ========== Funktion för att ladda ett random recipe, knapp för att slumpa igen ==========
@@ -79,26 +107,26 @@ async function randomRecipe() {
   randomContainer.append(image);
 
   const randomInfo = `
-          <article class="random-meal-info">
-          <h2 class="meal-name">${data.meals[0].strMeal}</h2>
-          <p class="meal-category">${data.meals[0].strCategory}</p>
-          <h4>Instructions</h4>
-          <p>${data.meals[0].strInstructions}</p>
-          </article>
-      `;
+  <article class="random-meal-info">
+  <h2 class="meal-name">${data.meals[0].strMeal}</h2>
+  <p class="meal-category">${data.meals[0].strCategory}</p>
+  <h4>Instructions</h4>
+  <p>${data.meals[0].strInstructions}</p>
+  </article>
+  `;
   randomContainer.insertAdjacentHTML("beforeend", randomInfo);
 }
-randomRecipe();
 
 // ========== Search button that takes user input and looks through an API ==========
 searchBtn.addEventListener("click", async (event) => {
   event.preventDefault();
+  hideIntro();
 
   const res = await fetch(searchURL + inputField.value);
   const data = await res.json();
   if (
     data.meals &&
-    data.meals.length > 0 &&
+    inputField.value.length > 0 &&
     inputField.value.charAt(0) !== " "
   ) {
     mealSearchResults.innerHTML = "";
@@ -132,6 +160,30 @@ favMeals.addEventListener("click", async () => {
   reloadFavourites(favArr);
 });
 
+function reloadFavourites(arr) {
+  Promise.all(
+    arr.map((id) =>
+      fetch(mealID + id)
+        .then((res) => res.json())
+        .then((results) => {
+          const mealHTML = `
+            <article class="meal-card ${results.meals[0].idMeal}">
+            <img class="meal-img" src="${results.meals[0].strMealThumb}" />
+            <div class="like liked">
+            </div>
+            <div class="meal-info">
+            <h3 class="meal-name">${results.meals[0].strMeal}</h3>
+            <p class="meal-category">${results.meals[0].strCategory}</p>
+            </div>
+            </article>
+                `;
+          mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
+          listenForLikes();
+        })
+    )
+  );
+}
+
 // ===== Function that tracks the like buttons and adds/removes the meals' index to a favourite array =====
 function listenForLikes() {
   const likes = document.querySelectorAll(".like") as NodeListOf<HTMLElement>;
@@ -143,17 +195,16 @@ function listenForLikes() {
         this.classList.add("liked");
         if (!favArr.includes(parentID)) {
           favArr.push(parentID);
-          // console.log(parentID);
-          // console.log(favArr);
         }
       } else {
         const index = favArr.indexOf(parentID);
         favArr.splice(index, 1);
         this.classList.add("not-liked");
         this.classList.remove("liked");
-        console.log(parentID);
-        console.log(favArr);
       }
     });
   }
 }
+
+categoryMenu();
+randomRecipe();

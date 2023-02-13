@@ -5,3 +5,47 @@
   font-weight: 600;
   text-decoration: none;
 }
+
+@mixin desktopHeader {
+  .dropdown {
+    position: relative;
+    display: inline-block;
+
+    &:hover {
+      .drop-btn {
+        background-color: #cfbef7;
+      }
+      .dropdown-content {
+        display: block;
+      }
+    }
+
+    .drop-btn {
+      background-color: #c1aaf7;
+      color: white;
+      padding: 8px;
+      border: none;
+    }
+
+    .dropdown-content {
+      display: none;
+      cursor: pointer;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+
+      p {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+
+        &:hover {
+          background-color: #bdbcbc;
+        }
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@ main {
     "header header header"
     "hero hero hero"
     "search search search"
+    "intro intro intro"
     "daily daily daily"
     "weekly weekly weekly";
 }
@@ -29,6 +30,8 @@ header {
   width: 100%;
   align-items: center;
 
+  @include desktopHeader;
+
   h1 {
     margin: 0 20px 0 0;
   }
@@ -41,24 +44,28 @@ header {
   height: 160px;
   place-items: center;
   background: url(../images/flatlay-iron-skillet-with-meat-and-other-food.jpg);
-  background-size: cover;
+  background-size: 230%;
   background-position: center;
   background-repeat: no-repeat;
 
   #search-meals {
     display: flex;
     flex-direction: column;
-    h3 {
-      margin: auto;
+    align-items: center;
+    h2 {
+      margin: 0.2rem auto;
       color: white;
       font-weight: 400;
+      font-size: 2rem;
+      text-shadow: 3px 3px 4px #202020;
     }
     form {
       display: flex;
-      width: 250px;
-      padding: 2px;
+      width: 90%;
+      margin: 2px;
+      height: 4vh;
       border: 1px solid rgba(0, 0, 0, 0.534);
-      border-radius: 30px;
+      border-radius: 3rem;
       background-color: white;
     }
     input {
@@ -67,15 +74,26 @@ header {
       font-size: 14px;
       font-family: $sub-font;
       width: 100%;
+      border-radius: 2rem;
     }
     input:focus {
       outline: none;
     }
     button {
       font-family: $sub-font;
-      margin: auto;
-      margin-top: 0.3rem;
-      width: 64px;
+      width: 30%;
+      background-color: #4e9af1;
+      display: inline-block;
+      padding: 0.2em 1em;
+      border: 0.16em solid rgba(255, 255, 255, 0);
+      border-radius: 2em;
+      color: #ffffff;
+      text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
+      text-align: center;
+      transition: all 0.2s;
+      &:hover {
+        border-color: rgba(255, 255, 255, 1);
+      }
     }
   }
 }
@@ -158,6 +176,10 @@ header {
   }
 }
 
+.introduction {
+  grid-area: intro;
+}
+
 .random-recipe {
   display: grid;
   grid-area: daily;
@@ -206,6 +228,10 @@ header {
       margin: 0;
     }
   }
+  .hero {
+    height: 180px;
+    background-size: 200%;
+  }
   main {
     width: 80%;
     max-width: 1600px;
@@ -215,19 +241,25 @@ header {
       grid-template-columns: repeat(3, 1fr);
     }
   }
-  .hero {
-    height: 200px;
-  }
 }
 
 @media (min-width: $screen-md) {
+  .hero {
+    height: 220px;
+    background-size: 160%;
+    #search-meals {
+      forms {
+        height: 4.5vh;
+      }
+      h2 {
+        font-size: 4vw;
+      }
+    }
+  }
   .search-container {
     .meals {
       grid-template-columns: repeat(4, 1fr);
     }
-  }
-  .hero {
-    height: 240px;
   }
   .random-recipe {
     .random-container {
@@ -248,9 +280,22 @@ header {
   }
 }
 @media (min-width: $screen-lg) {
+  .hero {
+    height: 260px;
+    background-size: cover;
+    #search-meals {
+      h2 {
+        font-size: 3.6rem;
+      }
+    }
+  }
   .search-container {
     .meals {
       grid-template-columns: repeat(5, 1fr);
     }
   }
+}
+
+.hidden {
+  display: none;
 }

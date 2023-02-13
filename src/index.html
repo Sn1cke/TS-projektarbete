@@ -9,17 +9,21 @@
   </head>
   <body>
     <header>
+      <div class="dropdown">
+        <button class="drop-btn">Categories</button>
+        <div class="dropdown-content"></div>
+      </div>
       <button id="fav-meals">Favourite meals</button>
       <h1>Annapurna</h1>
     </header>
     <main>
       <section class="hero">
         <div id="search-meals">
-          <h3>Search for recipe</h3>
+          <h2>Search for recipe</h2>
           <form>
-            <input type="text" name="" id="user-search" />
+            <input type="text" id="user-search" />
+            <button id="search-btn">Search</button>
           </form>
-          <button id="search-btn">Search</button>
         </div>
       </section>
 
@@ -29,6 +33,10 @@
           <div id="search-history"></div>
         </div>
         <section class="meals"></section>
+      </section>
+      <section class="introduction">
+        <h1>Lacking ideas for dinner? We've got you!</h1>
+        <p></p>
       </section>
 
       <section class="random-recipe">
