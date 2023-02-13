@@ -63,7 +63,7 @@ header {
       display: flex;
       width: 90%;
       margin: 2px;
-      height: 4vh;
+      height: 3vh;
       border: 1px solid rgba(0, 0, 0, 0.534);
       border-radius: 3rem;
       background-color: white;
@@ -248,9 +248,6 @@ header {
     height: 220px;
     background-size: 160%;
     #search-meals {
-      forms {
-        height: 4.5vh;
-      }
       h2 {
         font-size: 4vw;
       }
