@@ -5,6 +5,10 @@ const favMeals = document.querySelector("#fav-meals") as HTMLButtonElement;
 const introductionContainer = document.querySelector(
   ".introduction"
 ) as HTMLElement;
+const highlightContainer = document.querySelector(
+  ".highlighted-recipe"
+) as HTMLElement;
+const searchHeader = document.querySelector(".search-header");
 const searchContainer = document.querySelector(
   ".search-container"
 ) as HTMLElement;
@@ -16,6 +20,9 @@ const randomContainer = document.querySelector(
 ) as HTMLElement;
 const categoryLink = document.querySelector(".meal-category") as HTMLElement;
 const dropdownCategories = document.querySelector(".dropdown-content");
+const randomRecipeContainer = document.querySelector(
+  ".random-recipe"
+) as HTMLElement;
 
 // ========== Three different URLs ==========
 const searchURL: string = "https://themealdb.com/api/json/v1/1/search.php?s=";
@@ -32,6 +39,7 @@ const favArr: string[] = [];
 
 // ========== Functions to prevent DRY ==========
 const loadMealCards = function (arr) {
+  highlightContainer.classList.add("hidden");
   arr.forEach((meal) => {
     const mealHTML = `
         <article class="meal-card ${meal.idMeal}">
@@ -44,7 +52,38 @@ const loadMealCards = function (arr) {
             </div>
         </article>
         `;
+
     mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
+
+    const mealIMG = document.querySelector(".meal-img");
+    mealIMG.addEventListener("click", async () => {
+      const res = await fetch(mealID + meal.idMeal);
+      const data = await res.json();
+      console.log(data);
+      mealSearchResults.innerHTML = "";
+      searchHits.innerHTML = "";
+      searchHistory.innerHTML = "";
+
+      console.log(data.meals[0].strMeal);
+
+      highlightContainer.classList.remove("hidden");
+      highlightContainer.innerHTML = "";
+      randomRecipeContainer.classList.add("hidden");
+
+      const recipeHTML = `
+      <article class="highlighted-meal">
+        <img class="highlighted-img" src="${meal.strMealThumb}" />
+        <article class="highlighted-info">
+            <h2 class="highlighted-name">${data.meals[0].strMeal}</h2>
+            <p class="highlighted-category">${data.meals[0].strCategory}</p>
+            <h4>Instructions</h4>
+            <p>${data.meals[0].strInstructions}</p>
+        </article>
+      </article>
+      `;
+
+      highlightContainer.insertAdjacentHTML("afterbegin", recipeHTML);
+    });
 
     const notLiked = document.querySelector(".not-liked");
     if (favArr.includes(meal.idMeal)) {
@@ -55,6 +94,7 @@ const loadMealCards = function (arr) {
 };
 
 async function categoryMenu() {
+  highlightContainer.classList.add("hidden");
   const res = await fetch(mealCategories);
   const data = await res.json();
   data.categories.forEach((category) => {
@@ -154,6 +194,7 @@ searchBtn.addEventListener("click", async (event) => {
 });
 
 favMeals.addEventListener("click", async () => {
+  highlightContainer.classList.add("hidden");
   mealSearchResults.innerHTML = "";
   searchHistory.innerHTML = "";
   searchHits.innerHTML = `<h3 id="search-heading">Your favourite meals</h3>`;
