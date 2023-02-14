@@ -31,7 +31,7 @@ const filterCategory: string =
   "https://www.themealdb.com/api/json/v1/1/filter.php?c=";
 
 // ===== Array to store the favourite meals =====
-const favArr: string[] = [];
+let favArr: string[] = [];
 
 // ========== DID I REPEAT MYSELF??? ==========
 const highlightFunction = function (targetMealID: string) {
@@ -199,6 +199,7 @@ searchBtn.addEventListener("click", async (event) => {
   } else {
     alert(`${inputField.value} doesn't exist, try something else!`);
   }
+  inputField.value = "";
 });
 
 favMeals.addEventListener("click", async () => {
@@ -222,8 +223,7 @@ function reloadFavourites(arr) {
           const mealHTML = `
             <article class="meal-card ${results.meals[0].idMeal}">
             <img class="meal-img" src="${results.meals[0].strMealThumb}" />
-            <div class="like liked">
-            </div>
+            <div class="remove-fav"></div>
             <div class="meal-info">
             <h3 class="meal-name">${results.meals[0].strMeal}</h3>
             <p class="meal-category">${results.meals[0].strCategory}</p>
@@ -231,14 +231,23 @@ function reloadFavourites(arr) {
             </article>
                 `;
           mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
-          listenForLikes();
 
           const mealIMG = document.querySelector(".meal-img");
           const parentID = mealIMG.parentElement.classList[1];
           highlightFunction(parentID);
+          const removeFav = document.querySelector(".remove-fav");
+
+          removeFav.addEventListener("click", function () {
+            mealIMG.parentElement.remove();
+            favArr = favArr.filter((meal) => meal !== parentID);
+            if (favArr.length === 0) {
+              mealSearchResults.innerHTML = `<p>You have no favourites! :(`;
+            }
+          });
         })
     )
   );
+  randomContainer.classList.add("hidden");
 }
 
 // ===== Function that tracks the like buttons and adds/removes the meals' index to a favourite array =====

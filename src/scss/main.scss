@@ -15,8 +15,7 @@ main {
     "hero hero hero"
     "search search search"
     "intro intro intro"
-    "daily daily daily"
-    "weekly weekly weekly";
+    "daily daily daily";
   grid-area: search / intro / daily / weekly;
 }
 
@@ -91,7 +90,7 @@ header {
       text-align: center;
       transition: all 0.2s;
       &:hover {
-        border-color: rgba(255, 255, 255, 1);
+        border-color: #87bdfa;
       }
     }
   }
@@ -115,7 +114,9 @@ header {
       align-self: center;
     }
     #search-history {
-      margin: 8px 0;
+      display: flex;
+      justify-content: right;
+      margin: 8px 16px;
       flex: 1;
       .history-btn {
         @include searchHistoryButton;
@@ -133,11 +134,24 @@ header {
       position: relative;
       .like {
         cursor: pointer;
-        width: 25px;
-        height: 25px;
+        width: 40px;
+        height: 40px;
         position: absolute;
         top: 3%;
         right: 3%;
+      }
+      .remove-fav {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 3%;
+        right: 3%;
+        background-image: url(../images/liked.png);
+        background-size: cover;
+        &:hover {
+          background-image: url(../images/remove_like.png);
+        }
       }
       .liked {
         background-image: url(../images/liked.png);
