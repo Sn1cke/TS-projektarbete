@@ -241,7 +241,7 @@ function reloadFavourites(arr) {
             mealIMG.parentElement.remove();
             favArr = favArr.filter((meal) => meal !== parentID);
             if (favArr.length === 0) {
-              mealSearchResults.innerHTML = `<p>You have no favourites! :(`;
+              mealSearchResults.innerHTML = `<p>Empty! :(`;
             }
           });
         })

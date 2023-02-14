@@ -68,7 +68,7 @@ header {
     }
     input {
       border: none;
-      margin: 0 5px;
+      margin: 0 0.8rem;
       font-size: 14px;
       font-family: $sub-font;
       width: 100%;
@@ -110,17 +110,10 @@ header {
     grid-area: heading;
     #search-hits {
       margin: 8px 16;
-      flex: 1;
       align-self: center;
     }
     #search-history {
-      display: flex;
-      justify-content: right;
-      margin: 8px 16px;
-      flex: 1;
-      .history-btn {
-        @include searchHistoryButton;
-      }
+      display: none;
     }
   }
   .meals {
@@ -192,6 +185,19 @@ header {
 
 .introduction {
   grid-area: intro;
+  margin: 0 16px;
+  h2 {
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 400;
+  }
+  h3 {
+    font-family: $sub-font;
+    margin-top: 16px;
+  }
+  p {
+    text-align: justify;
+  }
 }
 
 .random-recipe {
@@ -200,6 +206,7 @@ header {
 
   > h2 {
     margin: 16 16 0 16;
+    font-family: $sub-font;
   }
 
   .random-container {
@@ -244,14 +251,6 @@ header {
       font-family: $main-font;
     }
   }
-
-  //   h4 {
-  //     margin: 0.5rem 0 0.2rem 0;
-  //   }
-  //   h4,
-  //   p {
-  //     font-family: $sub-font;
-  //   }
 }
 
 .weekly-recipes {
@@ -284,6 +283,17 @@ header {
     max-width: 1600px;
   }
   .search-container {
+    .search-header {
+      #search-history {
+        display: flex;
+        justify-content: right;
+        margin: 8px 16px;
+        flex: 1;
+        .history-btn {
+          @include searchHistoryButton;
+        }
+      }
+    }
     .meals {
       grid-template-columns: repeat(3, 1fr);
     }
