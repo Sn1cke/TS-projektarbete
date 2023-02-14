@@ -19,6 +19,7 @@ const searchHistory = document.querySelector("#search-history") as HTMLElement;
 const randomContainer = document.querySelector(
   ".random-container"
 ) as HTMLElement;
+const randomWrapper = document.querySelector(".random-recipe");
 
 // ========== Three different URLs ==========
 const searchURL: string = "https://themealdb.com/api/json/v1/1/search.php?s=";
@@ -50,24 +51,26 @@ const highlightFunction = function (targetMealID: string) {
     highlightContainer.innerHTML = "";
 
     const recipeHTML = `
-      <article class="highlighted-meal">
+    <div class="highlight-container">
         <img class="highlighted-img" src="${data.meals[0].strMealThumb}" />
-        <h2 class="highlighted-name">${data.meals[0].strMeal}</h2>
-        <p class="highlighted-category">${data.meals[0].strCategory}</p>
-        <h4>Ingredients</h4>
-        <ul>
-            <li>${data.meals[0].strMeasure1} ${data.meals[0].strIngredient1}</li>
-            <li>${data.meals[0].strMeasure2} ${data.meals[0].strIngredient2}</li>
-            <li>${data.meals[0].strMeasure3} ${data.meals[0].strIngredient3}</li>
-            <li>${data.meals[0].strMeasure4} ${data.meals[0].strIngredient4}</li>
-            <li>${data.meals[0].strMeasure5} ${data.meals[0].strIngredient5}</li>
-            <li>${data.meals[0].strMeasure6} ${data.meals[0].strIngredient6}</li>
-            <li>${data.meals[0].strMeasure7} ${data.meals[0].strIngredient7}</li>
-            <li>${data.meals[0].strMeasure8} ${data.meals[0].strIngredient8}</li>
-        </ul>
-        <h4>Instructions</h4>
-        <p>${data.meals[0].strInstructions}</p>
-      </article>
+        <article class="highlighted-meal">
+            <h2 class="highlighted-name">${data.meals[0].strMeal}</h2>
+            <p class="highlighted-category">${data.meals[0].strCategory}</p>
+            <h4>Ingredients</h4>
+            <ul>
+                <li>${data.meals[0].strMeasure1} ${data.meals[0].strIngredient1}</li>
+                <li>${data.meals[0].strMeasure2} ${data.meals[0].strIngredient2}</li>
+                <li>${data.meals[0].strMeasure3} ${data.meals[0].strIngredient3}</li>
+                <li>${data.meals[0].strMeasure4} ${data.meals[0].strIngredient4}</li>
+                <li>${data.meals[0].strMeasure5} ${data.meals[0].strIngredient5}</li>
+                <li>${data.meals[0].strMeasure6} ${data.meals[0].strIngredient6}</li>
+                <li>${data.meals[0].strMeasure7} ${data.meals[0].strIngredient7}</li>
+                <li>${data.meals[0].strMeasure8} ${data.meals[0].strIngredient8}</li>
+            </ul>
+            <h4>Instructions</h4>
+            <p>${data.meals[0].strInstructions}</p>
+        </article>
+      </div>
       `;
 
     highlightContainer.insertAdjacentHTML("afterbegin", recipeHTML);
@@ -105,7 +108,6 @@ const hideIntro = function () {
 };
 
 async function categoryMenu() {
-  highlightContainer.classList.add("hidden");
   const res = await fetch(mealCategories);
   const data = await res.json();
   data.categories.forEach((category) => {
@@ -114,6 +116,8 @@ async function categoryMenu() {
     dropdownCategories.append(categoryName);
 
     categoryName.addEventListener("click", async () => {
+      highlightContainer.classList.add("hidden");
+      introductionContainer.classList.add("hidden");
       const res2 = await fetch(filterCategory + categoryName.innerText);
       const data2 = await res2.json();
       mealSearchResults.innerHTML = "";
@@ -158,6 +162,17 @@ async function randomRecipe() {
   <h2 class="meal-name">${data.meals[0].strMeal}</h2>
   </div>
   <p class="meal-category">${data.meals[0].strCategory}</p>
+         <h4>Ingredients</h4>
+        <ul>
+            <li>${data.meals[0].strMeasure1} ${data.meals[0].strIngredient1}</li>
+            <li>${data.meals[0].strMeasure2} ${data.meals[0].strIngredient2}</li>
+            <li>${data.meals[0].strMeasure3} ${data.meals[0].strIngredient3}</li>
+            <li>${data.meals[0].strMeasure4} ${data.meals[0].strIngredient4}</li>
+            <li>${data.meals[0].strMeasure5} ${data.meals[0].strIngredient5}</li>
+            <li>${data.meals[0].strMeasure6} ${data.meals[0].strIngredient6}</li>
+            <li>${data.meals[0].strMeasure7} ${data.meals[0].strIngredient7}</li>
+            <li>${data.meals[0].strMeasure8} ${data.meals[0].strIngredient8}</li>
+        </ul>
   <h4>Instructions</h4>
   <p>${data.meals[0].strInstructions}</p>
   </article>
@@ -209,7 +224,7 @@ favMeals.addEventListener("click", async () => {
   searchHistory.innerHTML = "";
   searchHits.innerHTML = `<h3 id="search-heading">Your favourite meals</h3>`;
   if (favArr.length === 0) {
-    mealSearchResults.innerHTML = `<p>No favourites yet! :(`;
+    mealSearchResults.innerHTML = `<p class="empty-favs">No favourites yet! :(`;
   }
   reloadFavourites(favArr);
 });
@@ -241,13 +256,13 @@ function reloadFavourites(arr) {
             mealIMG.parentElement.remove();
             favArr = favArr.filter((meal) => meal !== parentID);
             if (favArr.length === 0) {
-              mealSearchResults.innerHTML = `<p>Empty! :(`;
+              mealSearchResults.innerHTML = `<p class="empty-favs">Empty! :(`;
             }
           });
         })
     )
   );
-  randomContainer.classList.add("hidden");
+  randomWrapper.classList.add("hidden");
 }
 
 // ===== Function that tracks the like buttons and adds/removes the meals' index to a favourite array =====

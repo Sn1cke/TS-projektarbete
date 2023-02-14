@@ -4,6 +4,7 @@
   color: rgb(201, 45, 45);
   font-weight: 600;
   text-decoration: none;
+  margin-right: 6px;
 }
 
 @mixin desktopHeader {
@@ -13,7 +14,7 @@
 
     &:hover {
       .drop-btn {
-        background-color: #cfbef7;
+        background-color: #ecb075;
       }
       .dropdown-content {
         display: block;
@@ -21,10 +22,15 @@
     }
 
     .drop-btn {
-      background-color: #c1aaf7;
+      background-color: #c48035;
       color: white;
-      padding: 8px;
+      padding: 8px 18px;
       border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
+        -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
     }
 
     .dropdown-content {
@@ -41,17 +47,12 @@
         padding: 12px 16px;
         text-decoration: none;
         display: block;
+        border-radius: 1rem;
 
         &:hover {
-          background-color: #bdbcbc;
+          background-color: #f0cdab;
         }
       }
     }
   }
-}
-
-@mixin cardFlex {
-  display: flex;
-  flex-direction: column;
-  margin: 8px 16px 16px 16px;
 }

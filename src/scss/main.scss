@@ -6,6 +6,10 @@
   font-family: $main-font;
 }
 
+body {
+  background-color: #f9f9f9;
+}
+
 main {
   min-width: 366px;
   margin: auto;
@@ -15,24 +19,47 @@ main {
     "hero hero hero"
     "search search search"
     "intro intro intro"
-    "daily daily daily";
-  grid-area: search / intro / daily / weekly;
+    "random random random"
+    "footer footer footer";
+  grid-area: search / intro / random / weekly;
 }
 
 header {
   margin: auto;
   grid-area: header;
   display: flex;
-  justify-content: right;
   height: 65px;
   width: 100%;
   align-items: center;
+  gap: 8px;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-family: $main-font;
+    font-size: 2.7rem;
+    position: relative;
+    // left: 16px;
+  }
+
+  #fav-meals {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    padding: 8px 18px;
+    border: none;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
+      -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+    background-color: rgb(215, 4, 102);
+    color: #fff;
+    &:hover {
+      background-color: rgb(226, 81, 117);
+    }
+  }
 
   @include desktopHeader;
-
-  h1 {
-    margin: 0 20px 0 0;
-  }
 }
 
 .hero {
@@ -122,6 +149,9 @@ header {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin: 0 16px;
+    .empty-favs {
+      margin: 8 0 16 0;
+    }
     .meal-card {
       box-shadow: 0.1rem 0.2rem 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
       position: relative;
@@ -171,7 +201,8 @@ header {
         padding: 0 0.2rem;
         margin: 0.2rem 0 0.5rem;
         .meal-name {
-          font-size: 1rem;
+          margin-left: 6px;
+          font-size: 1.2rem;
           display: inline;
         }
         .meal-category {
@@ -185,28 +216,36 @@ header {
 
 .introduction {
   grid-area: intro;
-  margin: 0 16px;
   h2 {
     text-align: center;
     font-size: 2.1rem;
     font-weight: 400;
+    background-color: $slogan-bg;
+    padding: 8px;
   }
   h3 {
     font-family: $sub-font;
-    margin-top: 16px;
+    margin: 8px 16px;
+    font-size: 1.4rem;
+    font-weight: 400;
   }
   p {
+    margin: 0 16px;
     text-align: justify;
   }
 }
 
 .random-recipe {
   display: grid;
-  grid-area: daily;
+  grid-area: random;
 
   > h2 {
-    margin: 16 16 0 16;
-    font-family: $sub-font;
+    margin: 16 0 0 0;
+    padding: 4 0 4 16px;
+    font-family: $main-font;
+    font-weight: 400;
+    background-color: $recipe-bg;
+    color: white;
   }
 
   .random-container {
@@ -218,9 +257,18 @@ header {
       width: 100%;
     }
     .random-meal-info {
+      display: flex;
+      flex-direction: column;
+      .meal-name {
+        display: inline;
+      }
       .meal-category {
         @include categoryStyle;
         font-family: $main-font;
+      }
+      .ingredients-list {
+        display: inline;
+        justify-content: right;
       }
       h4 {
         margin: 0.5rem 0 0.2rem 0;
@@ -234,32 +282,49 @@ header {
 }
 
 .highlighted-recipe {
-  width: 100%;
   grid-area: intro;
-  display: grid;
+  display: flex;
+  flex-direction: row;
+  gap: 0.8rem;
+  margin: 8px 16px 16px 16px;
+
+  img {
+    width: 100%;
+  }
 
   .highlighted-meal {
-    img {
-      grid-area: pic;
-    }
     .highlighted-name {
-      grid-area: name;
+      display: inline;
     }
     .highlighted-category {
-      grid-area: name;
       @include categoryStyle;
       font-family: $main-font;
     }
   }
 }
 
-.weekly-recipes {
-  grid-area: weekly;
-  border: 1px solid yellow;
-  background-color: #555;
+footer {
+  grid-area: footer;
+  background: $footer-bg;
+  color: white;
+  p {
+    padding: 40px 0;
+    text-align: center;
+    img {
+      width: 44px;
+    }
+  }
 }
 
 // ========== MEDIA QUERIES ==========
+
+@media (max-width: $screen-sm) {
+  header {
+    a {
+      margin-left: 8px;
+    }
+  }
+}
 
 @media (min-width: $screen-sm) {
   header {
@@ -289,6 +354,7 @@ header {
         justify-content: right;
         margin: 8px 16px;
         flex: 1;
+        gap: 8px;
         .history-btn {
           @include searchHistoryButton;
         }
@@ -319,6 +385,13 @@ header {
     }
   }
   .random-recipe {
+    .random-header {
+      padding: 4px 8px;
+      font-weight: 400;
+      background-color: $recipe-bg;
+      color: white;
+      font-family: $main-font;
+    }
     .random-container {
       display: flex;
       flex-direction: row;
@@ -335,7 +408,29 @@ header {
       }
     }
   }
+  .highlighted-recipe {
+    .highlight-container {
+      display: flex;
+      flex-direction: row;
+      gap: 0.8rem;
+      margin: 8px 16px 16px 16px;
+      img {
+        flex: 1;
+        object-fit: cover;
+        max-width: 450px;
+        max-height: 450px;
+      }
+      .highlighted-meal {
+        flex: 1;
+        .highlighted-category {
+          @include categoryStyle;
+          font-family: $main-font;
+        }
+      }
+    }
+  }
 }
+
 @media (min-width: $screen-lg) {
   .hero {
     height: 260px;
