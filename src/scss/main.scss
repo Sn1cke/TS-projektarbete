@@ -178,10 +178,6 @@ header {
 
 .introduction {
   grid-area: intro;
-  h2,
-  p {
-    margin: 0 16;
-  }
 }
 
 .random-recipe {
@@ -193,8 +189,10 @@ header {
   }
 
   .random-container {
-    @include cardFlex;
+    display: flex;
+    flex-direction: column;
     gap: 0.8rem;
+    margin: 8px 16px 16px 16px;
     img {
       width: 100%;
     }
@@ -217,29 +215,29 @@ header {
 .highlighted-recipe {
   width: 100%;
   grid-area: intro;
+  display: grid;
 
   .highlighted-meal {
-    @include cardFlex;
     img {
-      width: 100%;
-      object-fit: cover;
+      grid-area: pic;
     }
     .highlighted-name {
-      margin-top: 0.5rem;
+      grid-area: name;
     }
     .highlighted-category {
       grid-area: name;
       @include categoryStyle;
       font-family: $main-font;
     }
-    h4 {
-      margin: 0.5rem 0 0.2rem 0;
-    }
-    h4,
-    p {
-      font-family: $sub-font;
-    }
   }
+
+  //   h4 {
+  //     margin: 0.5rem 0 0.2rem 0;
+  //   }
+  //   h4,
+  //   p {
+  //     font-family: $sub-font;
+  //   }
 }
 
 .weekly-recipes {
@@ -310,26 +308,6 @@ header {
       }
       .random-meal-info {
         flex: 1;
-      }
-    }
-  }
-  .highlighted-recipe {
-    .highlighted-meal {
-      display: flex;
-      flex-direction: row;
-      gap: 0.8rem;
-      margin: 8px 16px 16px 16px;
-      img {
-        flex: 1;
-        object-fit: cover;
-        max-width: 450px;
-        max-height: 450px;
-      }
-      .highlighted-info {
-        flex: 1;
-        h2 {
-          margin: 0;
-        }
       }
     }
   }

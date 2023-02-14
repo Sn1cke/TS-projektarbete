@@ -1,7 +1,8 @@
 // ========== Declaring HTML elements ==========
+const dropdownCategories = document.querySelector(".dropdown-content");
+const favMeals = document.querySelector("#fav-meals") as HTMLButtonElement;
 const inputField = document.querySelector("#user-search") as HTMLInputElement;
 const searchBtn = document.querySelector("#search-btn") as HTMLButtonElement;
-const favMeals = document.querySelector("#fav-meals") as HTMLButtonElement;
 const introductionContainer = document.querySelector(
   ".introduction"
 ) as HTMLElement;
@@ -18,11 +19,6 @@ const searchHistory = document.querySelector("#search-history") as HTMLElement;
 const randomContainer = document.querySelector(
   ".random-container"
 ) as HTMLElement;
-const categoryLink = document.querySelector(".meal-category") as HTMLElement;
-const dropdownCategories = document.querySelector(".dropdown-content");
-const randomRecipeContainer = document.querySelector(
-  ".random-recipe"
-) as HTMLElement;
 
 // ========== Three different URLs ==========
 const searchURL: string = "https://themealdb.com/api/json/v1/1/search.php?s=";
@@ -37,7 +33,47 @@ const filterCategory: string =
 // ===== Array to store the favourite meals =====
 const favArr: string[] = [];
 
-// ========== Functions to prevent DRY ==========
+// ========== DID I REPEAT MYSELF??? ==========
+const highlightFunction = function (targetMealID: string) {
+  const mealIMG = document.querySelector(".meal-img");
+  mealIMG.addEventListener("click", async () => {
+    const res = await fetch(mealID + targetMealID);
+    const data = await res.json();
+    console.log(data);
+    mealSearchResults.innerHTML = "";
+    searchHits.innerHTML = "";
+    searchHistory.innerHTML = "";
+
+    console.log(data.meals[0].strMeal);
+
+    highlightContainer.classList.remove("hidden");
+    highlightContainer.innerHTML = "";
+
+    const recipeHTML = `
+      <article class="highlighted-meal">
+        <img class="highlighted-img" src="${data.meals[0].strMealThumb}" />
+        <h2 class="highlighted-name">${data.meals[0].strMeal}</h2>
+        <p class="highlighted-category">${data.meals[0].strCategory}</p>
+        <h4>Ingredients</h4>
+        <ul>
+            <li>${data.meals[0].strMeasure1} ${data.meals[0].strIngredient1}</li>
+            <li>${data.meals[0].strMeasure2} ${data.meals[0].strIngredient2}</li>
+            <li>${data.meals[0].strMeasure3} ${data.meals[0].strIngredient3}</li>
+            <li>${data.meals[0].strMeasure4} ${data.meals[0].strIngredient4}</li>
+            <li>${data.meals[0].strMeasure5} ${data.meals[0].strIngredient5}</li>
+            <li>${data.meals[0].strMeasure6} ${data.meals[0].strIngredient6}</li>
+            <li>${data.meals[0].strMeasure7} ${data.meals[0].strIngredient7}</li>
+            <li>${data.meals[0].strMeasure8} ${data.meals[0].strIngredient8}</li>
+        </ul>
+        <h4>Instructions</h4>
+        <p>${data.meals[0].strInstructions}</p>
+      </article>
+      `;
+
+    highlightContainer.insertAdjacentHTML("afterbegin", recipeHTML);
+  });
+};
+
 const loadMealCards = function (arr) {
   highlightContainer.classList.add("hidden");
   arr.forEach((meal) => {
@@ -52,38 +88,8 @@ const loadMealCards = function (arr) {
             </div>
         </article>
         `;
-
     mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
-
-    const mealIMG = document.querySelector(".meal-img");
-    mealIMG.addEventListener("click", async () => {
-      const res = await fetch(mealID + meal.idMeal);
-      const data = await res.json();
-      console.log(data);
-      mealSearchResults.innerHTML = "";
-      searchHits.innerHTML = "";
-      searchHistory.innerHTML = "";
-
-      console.log(data.meals[0].strMeal);
-
-      highlightContainer.classList.remove("hidden");
-      highlightContainer.innerHTML = "";
-      randomRecipeContainer.classList.add("hidden");
-
-      const recipeHTML = `
-      <article class="highlighted-meal">
-        <img class="highlighted-img" src="${meal.strMealThumb}" />
-        <article class="highlighted-info">
-            <h2 class="highlighted-name">${data.meals[0].strMeal}</h2>
-            <p class="highlighted-category">${data.meals[0].strCategory}</p>
-            <h4>Instructions</h4>
-            <p>${data.meals[0].strInstructions}</p>
-        </article>
-      </article>
-      `;
-
-      highlightContainer.insertAdjacentHTML("afterbegin", recipeHTML);
-    });
+    highlightFunction(meal.idMeal);
 
     const notLiked = document.querySelector(".not-liked");
     if (favArr.includes(meal.idMeal)) {
@@ -91,6 +97,11 @@ const loadMealCards = function (arr) {
       notLiked.classList.add("liked");
     }
   });
+};
+
+const hideIntro = function () {
+  introductionContainer.classList.add("hidden");
+  searchContainer.classList.remove("hidden");
 };
 
 async function categoryMenu() {
@@ -119,6 +130,7 @@ async function categoryMenu() {
         </article>
         `;
         mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
+        searchHits.innerHTML = `<h3 id="search-heading">${data2.meals.length} matching results</h3>`;
 
         const notLiked = document.querySelector(".not-liked");
         if (favArr.includes(meal.idMeal)) {
@@ -129,11 +141,6 @@ async function categoryMenu() {
       listenForLikes();
     });
   });
-}
-
-function hideIntro() {
-  introductionContainer.classList.add("hidden");
-  searchContainer.classList.remove("hidden");
 }
 
 // ========== Funktion för att ladda ett random recipe, knapp för att slumpa igen ==========
@@ -149,6 +156,7 @@ async function randomRecipe() {
   const randomInfo = `
   <article class="random-meal-info">
   <h2 class="meal-name">${data.meals[0].strMeal}</h2>
+  </div>
   <p class="meal-category">${data.meals[0].strCategory}</p>
   <h4>Instructions</h4>
   <p>${data.meals[0].strInstructions}</p>
@@ -195,9 +203,13 @@ searchBtn.addEventListener("click", async (event) => {
 
 favMeals.addEventListener("click", async () => {
   highlightContainer.classList.add("hidden");
+  introductionContainer.classList.add("hidden");
   mealSearchResults.innerHTML = "";
   searchHistory.innerHTML = "";
   searchHits.innerHTML = `<h3 id="search-heading">Your favourite meals</h3>`;
+  if (favArr.length === 0) {
+    mealSearchResults.innerHTML = `<p>No favourites yet! :(`;
+  }
   reloadFavourites(favArr);
 });
 
@@ -220,6 +232,10 @@ function reloadFavourites(arr) {
                 `;
           mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
           listenForLikes();
+
+          const mealIMG = document.querySelector(".meal-img");
+          const parentID = mealIMG.parentElement.classList[1];
+          highlightFunction(parentID);
         })
     )
   );
