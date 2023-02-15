@@ -4,7 +4,7 @@
 
 ## Description
 
-This website was created as a final project of a Typescript course. There is a heavy emphasis onTypescript, of course, but also on learning how to use AJAX and SASS. My motivation behind the project is my own endless battle with finding inspiration for what meals to cook. I wanted a simple and easy-to-use website where I can find just enough information, without any fuzz.
+This website was created as a final project of a Typescript course. There is a heavy emphasis on Typescript, of course, but also on learning how to use AJAX and SASS. My motivation behind the project is my own endless battle with finding inspiration for what meals to cook. I wanted a simple and easy-to-use website where I can find just enough information, without any fuzz.
 
 ## How to use
 
