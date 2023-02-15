@@ -12,7 +12,7 @@ Use the search function to find an array of different recipes matching your sear
 
 ## How to install and run
 
-1.  Clone the repo on your machine by using the command prompt
+1.  Clone the repo to your machine by using the command prompt
 
 ```
 git clone git@github.com:Sn1cke/SASS-projektarbete.git
