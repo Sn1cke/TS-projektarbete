@@ -55,6 +55,7 @@ I also used the following APIs to fetch data
 - HTML
 - SASS
 - AJAX
+- Parcel build tool
 
 ### A special thanks
 
