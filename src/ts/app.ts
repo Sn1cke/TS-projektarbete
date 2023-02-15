@@ -1,6 +1,6 @@
 // ========== Declaring HTML elements ==========
 const dropdownCategories = document.querySelector(".dropdown-content");
-const favMeals = document.querySelector("#fav-meals") as HTMLButtonElement;
+const favMealsBtn = document.querySelector("#fav-meals") as HTMLButtonElement;
 const inputField = document.querySelector("#user-search") as HTMLInputElement;
 const searchBtn = document.querySelector("#search-btn") as HTMLButtonElement;
 const introductionContainer = document.querySelector(
@@ -16,7 +16,7 @@ const searchContainer = document.querySelector(
 const mealSearchResults = document.querySelector(".meals") as HTMLElement;
 const searchHits = document.querySelector("#search-hits") as HTMLElement;
 const searchHistory = document.querySelector("#search-history") as HTMLElement;
-const randomContainer = document.querySelector(
+const randomMealContainer = document.querySelector(
   ".random-container"
 ) as HTMLElement;
 const randomWrapper = document.querySelector(".random-recipe");
@@ -34,10 +34,17 @@ const filterCategory: string =
 // ===== Array to store the favourite meals =====
 let favArr: string[] = [];
 
+type mealType = {
+  idMeal: string;
+  strMealThumb: string;
+  strMeal: string;
+  strCategory: string;
+};
+
 // ========== DID I REPEAT MYSELF??? ==========
 const highlightFunction = function (targetMealID: string) {
   const mealIMG = document.querySelector(".meal-img");
-  mealIMG.addEventListener("click", async () => {
+  mealIMG?.addEventListener("click", async () => {
     const res = await fetch(mealID + targetMealID);
     const data = await res.json();
     console.log(data);
@@ -77,9 +84,9 @@ const highlightFunction = function (targetMealID: string) {
   });
 };
 
-const loadMealCards = function (arr) {
+const loadMealCards = function (arr: mealType[]) {
   highlightContainer.classList.add("hidden");
-  arr.forEach((meal) => {
+  arr.forEach((meal: mealType) => {
     const mealHTML = `
         <article class="meal-card ${meal.idMeal}">
             <img class="meal-img" src="${meal.strMealThumb}" />
@@ -96,8 +103,8 @@ const loadMealCards = function (arr) {
 
     const notLiked = document.querySelector(".not-liked");
     if (favArr.includes(meal.idMeal)) {
-      notLiked.classList.remove("not-liked");
-      notLiked.classList.add("liked");
+      notLiked?.classList.remove("not-liked");
+      notLiked?.classList.add("liked");
     }
   });
 };
@@ -110,10 +117,10 @@ const hideIntro = function () {
 async function categoryMenu() {
   const res = await fetch(mealCategories);
   const data = await res.json();
-  data.categories.forEach((category) => {
+  data.categories.forEach((category: { strCategory: string }) => {
     const categoryName = document.createElement("p");
     categoryName.innerText = category.strCategory;
-    dropdownCategories.append(categoryName);
+    dropdownCategories?.append(categoryName);
 
     categoryName.addEventListener("click", async () => {
       highlightContainer.classList.add("hidden");
@@ -121,8 +128,9 @@ async function categoryMenu() {
       const res2 = await fetch(filterCategory + categoryName.innerText);
       const data2 = await res2.json();
       mealSearchResults.innerHTML = "";
-      data2.meals.forEach((meal) => {
-        const mealHTML = `
+      data2.meals.forEach(
+        (meal: { idMeal: string; strMealThumb: string; strMeal: string }) => {
+          const mealHTML = `
         <article class="meal-card ${meal.idMeal}">
             <img class="meal-img" src="${meal.strMealThumb}" />
             <div class="like not-liked">
@@ -133,15 +141,16 @@ async function categoryMenu() {
             </div>
         </article>
         `;
-        mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
-        searchHits.innerHTML = `<h3 id="search-heading">${data2.meals.length} matching results</h3>`;
+          mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
+          searchHits.innerHTML = `<h3 id="search-heading">${data2.meals.length} matching results</h3>`;
 
-        const notLiked = document.querySelector(".not-liked");
-        if (favArr.includes(meal.idMeal)) {
-          notLiked.classList.remove("not-liked");
-          notLiked.classList.add("liked");
+          const notLiked = document.querySelector(".not-liked");
+          if (favArr.includes(meal.idMeal)) {
+            notLiked?.classList.remove("not-liked");
+            notLiked?.classList.add("liked");
+          }
         }
-      });
+      );
       listenForLikes();
     });
   });
@@ -155,7 +164,7 @@ async function randomRecipe() {
   const image = document.createElement("img");
   image.id = "random-img";
   image.src = data.meals[0].strMealThumb;
-  randomContainer.append(image);
+  randomMealContainer.append(image);
 
   const randomInfo = `
   <article class="random-meal-info">
@@ -177,7 +186,7 @@ async function randomRecipe() {
   <p>${data.meals[0].strInstructions}</p>
   </article>
   `;
-  randomContainer.insertAdjacentHTML("beforeend", randomInfo);
+  randomMealContainer.insertAdjacentHTML("beforeend", randomInfo);
 }
 
 // ========== Search button that takes user input and looks through an API ==========
@@ -199,7 +208,7 @@ searchBtn.addEventListener("click", async (event) => {
     historyBtn.className = "history-btn";
     historyBtn.innerText = inputField.value;
     searchHistory.append(historyBtn);
-    historyBtn.addEventListener("click", async (event) => {
+    historyBtn.addEventListener("click", async () => {
       mealSearchResults.innerHTML = "";
 
       const res = await fetch(searchURL + historyBtn.innerText);
@@ -217,7 +226,7 @@ searchBtn.addEventListener("click", async (event) => {
   inputField.value = "";
 });
 
-favMeals.addEventListener("click", async () => {
+favMealsBtn.addEventListener("click", async () => {
   highlightContainer.classList.add("hidden");
   introductionContainer.classList.add("hidden");
   mealSearchResults.innerHTML = "";
@@ -229,7 +238,7 @@ favMeals.addEventListener("click", async () => {
   reloadFavourites(favArr);
 });
 
-function reloadFavourites(arr) {
+function reloadFavourites(arr: string[]) {
   Promise.all(
     arr.map((id) =>
       fetch(mealID + id)
@@ -247,13 +256,15 @@ function reloadFavourites(arr) {
                 `;
           mealSearchResults.insertAdjacentHTML("afterbegin", mealHTML);
 
-          const mealIMG = document.querySelector(".meal-img");
-          const parentID = mealIMG.parentElement.classList[1];
+          const mealIMG = document.querySelector(
+            ".meal-img"
+          ) as HTMLImageElement;
+          const parentID = mealIMG.parentElement!.classList[1];
           highlightFunction(parentID);
           const removeFav = document.querySelector(".remove-fav");
 
-          removeFav.addEventListener("click", function () {
-            mealIMG.parentElement.remove();
+          removeFav?.addEventListener("click", function () {
+            mealIMG.parentElement!.remove();
             favArr = favArr.filter((meal) => meal !== parentID);
             if (favArr.length === 0) {
               mealSearchResults.innerHTML = `<p class="empty-favs">Empty! :(`;
@@ -262,7 +273,7 @@ function reloadFavourites(arr) {
         })
     )
   );
-  randomWrapper.classList.add("hidden");
+  randomWrapper!.classList.add("hidden");
 }
 
 // ===== Function that tracks the like buttons and adds/removes the meals' index to a favourite array =====
@@ -270,7 +281,7 @@ function listenForLikes() {
   const likes = document.querySelectorAll(".like") as NodeListOf<HTMLElement>;
   for (const like of likes) {
     like.addEventListener("click", function () {
-      const parentID = like.parentElement.classList[1];
+      const parentID = like.parentElement!.classList[1];
       if (this.classList.contains("not-liked")) {
         this.classList.remove("not-liked");
         this.classList.add("liked");
