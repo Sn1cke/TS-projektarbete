@@ -64,5 +64,7 @@ To all my clasmates for the inspiration to learn new things together! Having peo
 ## Developer
 
 Thank you for taking an interest in my project!
+
 [Add me on LinkedIn](https://www.linkedin.com/in/niclas-broberg-a6b079251/)
+
 [Follow me on GitHub](https://github.com/Sn1cke)
